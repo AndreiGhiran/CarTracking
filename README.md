@@ -8,7 +8,7 @@
 - Teodora Hoamea (MSD1)
 ### Scientific coordinators
 - Prof. Dr. Iftene Adrian
-- Conf. dr. Ignat Anca
+- Conf. Dr. Ignat Anca
 
 ## Stat-of-the-art document
 (to be added)
