@@ -6,7 +6,6 @@
 ### Developers
 - Andrei Ghiran (MSD1) (Scrum Master)
 - Sergiu Nistor (MSD1)
-- Maria Sandru (MC1)
 ### Scientific coordinators
 - Prof. Dr. Iftene Adrian
 - Conf. Dr. Ignat Anca
