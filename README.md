@@ -11,8 +11,8 @@
 - Prof. Dr. Iftene Adrian
 - Conf. Dr. Ignat Anca
 
-## Stat-of-the-art document
-- https://docs.google.com/document/d/1Let4CoPbQIRGgm51mYe8V0GDdz_e-gvwj5iG2Mnda0w/edit?usp=sharing
+## Paper
+- https://docs.google.com/document/d/1Mv5c_vVn8FXemM_OQNKI9l1WD4PTJvRDwOpNVZ6OEyM/edit#
 
 ## Tasks and Responsibilities Traking
 The projects section on the GitHub repository: https://github.com/AndreiGhiran/CarTracking/projects/1
