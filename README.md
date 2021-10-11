@@ -10,7 +10,7 @@
 - Prof. Dr. Iftene Adrian
 - Conf. Dr. Ignat Anca
 
-## Paper
+## State-of-the-art document
 - https://docs.google.com/document/d/1Mv5c_vVn8FXemM_OQNKI9l1WD4PTJvRDwOpNVZ6OEyM/edit?usp=sharing
 
 ## Tasks and Responsibilities Traking
