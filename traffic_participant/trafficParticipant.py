@@ -1,14 +1,12 @@
 from AOP_decorators.decorators import method_call_decorator, exception_catcher
 
-class TafficParticipant:
+class TrafficParticipant:
     geoLocation = None
     otherCarsGeolocations = []
     traffiCameraGeolocation = None
     obstaclesGeolocations = []
     cameraConnection = None
 
-    @exception_catcher
-    @method_call_decorator
     def __init__(self, geoLoc, otherGeoLoc, cameraGeolocation, obstaclesGeoloc, cameraConn):
         self.geoLocation = geoLoc
         self.otherCarsGeolocations = otherGeoLoc
@@ -18,16 +16,16 @@ class TafficParticipant:
     
     @exception_catcher
     @method_call_decorator
-    def decideNexrAction(self, geolocation, otherCarsGeolocations, obstaclesGeolocations):
+    def decideNextAction(self, geolocation, otherCarsGeolocations, obstaclesGeolocations):
         action = None
         return action
     
     @exception_catcher
     @method_call_decorator
-    def connectToClosestCamera():
+    def connectToClosestCamera(self):
         return 
 
     @exception_catcher
     @method_call_decorator
-    def dissconectFromCamera():
+    def dissconectFromCamera(self):
         return None

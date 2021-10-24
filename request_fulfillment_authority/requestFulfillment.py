@@ -4,10 +4,5 @@ class CarRequestFullfilmentAuthority:
 
     @exception_catcher
     @method_call_decorator
-    def __init__(self):
-        return None
-
-    @exception_catcher
-    @method_call_decorator
     def satisfyRequest(self, client, trafficCameraGeolocation):
         return [], []
