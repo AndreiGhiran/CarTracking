@@ -17,5 +17,5 @@
 The projects section on the GitHub repository: https://github.com/AndreiGhiran/CarTracking/projects/1
 
 ## Lab 4
-Andrei Ghiran -> implemented TrafficParticipant, CarRequestFullfilmentAuthority basic classes and decorators for basic AOP functionality;
-Sergiu Nistor -> implemented the rest of the basic classes;
+Andrei Ghiran -> implemented TrafficParticipant, CarRequestFullfilmentAuthority basic classes and decorators for basic AOP functionality;  
+Sergiu Nistor -> implemented the rest of the basic classes;  
