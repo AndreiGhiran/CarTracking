@@ -44,7 +44,7 @@ class ObjectDetection(AbstractAlgorithm):
         
         detections = self.__model(image)[0]
 
-    return detections
+        return detections
 
     def get_classes(self) -> List[str]:
         return self.__classes
