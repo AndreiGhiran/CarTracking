@@ -15,7 +15,7 @@ def carRequest():
 
     # TODO use real geolocation values (there are temporary)
     geolocation = [12,34]
-    authority_process = Popen('python ../Authority/src/main.py {} {} {} {}'.format(
+    authority_process = Popen('python ../Authority/src/main.py {}'.format(
         geolocation,
     ), stdin=PIPE, stdout=PIPE, stderr=PIPE, shell=True)
     
