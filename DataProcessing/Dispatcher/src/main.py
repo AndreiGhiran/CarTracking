@@ -9,9 +9,9 @@ PORT = 8080
 config_parser = ConfigParser()
 config_parser.read('../configuration/db.config')
 db_data = {
-    'user': config_parser.get('database', 'user')
-    'pass': config_parser.get('database', 'pass')
-    'host': config_parser.get('database', 'host')
+    'user': config_parser.get('database', 'user'),
+    'pass': config_parser.get('database', 'pass'),
+    'host': config_parser.get('database', 'host'),
     'schema': config_parser.get('database', 'schema')
 }
 
