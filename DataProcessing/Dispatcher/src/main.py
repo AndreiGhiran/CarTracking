@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from configparser import ConfigParser
-from subprocess import Popen
+from subprocess import Popen, PIPE
 
 
 PORT = 8080
