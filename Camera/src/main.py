@@ -19,15 +19,15 @@ CAMERA_ROTATION_Y = sys.argv[5]
 
 
 config_parser = ConfigParser()
-config_parser.read('../configuration/fulfillment_authority.config')
-fulfillment_authority_dispatcher_data = {
+config_parser.read('../configuration/data_processing_authority.config')
+data_processing_authority_dispatcher_data = {
     'ip': config_parser.get('dispatcher', 'ip'),
     'port': config_parser.get('dispatcher', 'port')
 }
 
 
 def dispatch(frame_size_x, frame_size_y, latitude, longitude, rotation_x, rotation_y):
-    url = '{}:{}'.format(fulfillment_authority_dispatcher_data['ip'], fulfillment_authority_dispatcher_data['port'])
+    url = '{}:{}'.format(data_processing_authority_dispatcher_data['ip'], data_processing_authority_dispatcher_data['port'])
     data = jsonify({
         'frame_size_x': frame_size_x,
         'frame_size_y': frame_size_y,
@@ -37,9 +37,9 @@ def dispatch(frame_size_x, frame_size_y, latitude, longitude, rotation_x, rotati
         'rotation_y': rotation_y
     })
     response = requests.post(url, data=data, headers={'Content-Type': 'application/json'})
-    fulfillment_authority_port = response.json()['port']
+    data_processing_authority_port = response.json()['port']
 
-    return fulfillment_authority_port
+    return data_processing_authority_port
 
 def get_frame_size(video_file_path):
     video_capture = cv2.VideoCapture(video_file_path)
@@ -48,9 +48,9 @@ def get_frame_size(video_file_path):
 
     return frame_size_x, frame_size_y
 
-def stream_frames(fulfillment_authority_data, video_file_path):
+def stream_frames(data_processing_authority_data, video_file_path):
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    server_address = (fulfillment_authority_data['ip'], fulfillment_authority_data['port'])
+    server_address = (data_processing_authority_data['ip'], data_processing_authority_data['port'])
     
     video_capture = cv2.VideoCapture(video_file_path)
 
@@ -70,7 +70,7 @@ def stream_frames(fulfillment_authority_data, video_file_path):
 if __name__ == '__main__':
     frame_size_x, frame_size_y = get_frame_size(VIDEO_FILE_PATH)
 
-    fulfillment_authority_port = dispatch(
+    data_processing_authority_port = dispatch(
         frame_size_x,
         frame_size_y,
         CAMERA_LATITUDE,
@@ -79,9 +79,9 @@ if __name__ == '__main__':
         CAMERA_ROTATION_Y
     )
 
-    fulfillment_authority_data = {
-        'ip': fulfillment_authority_dispatcher_data['ip'],
-        'port': fulfillment_authority_port
+    data_processing_authority_data = {
+        'ip': data_processing_authority_dispatcher_data['ip'],
+        'port': data_processing_authority_port
     }
 
-    stream_frames(fulfillment_authority_data, VIDEO_FILE_PATH)
+    stream_frames(data_processing_authority_data, VIDEO_FILE_PATH)
