@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify
 from configparser import ConfigParser
 from subprocess import Popen, PIPE
-from time import sleep
 
 
 PORT = 8081
@@ -21,11 +20,9 @@ def carRequest():
     
     obstacles = []
     cars = []
+
     for stdout_line in iter(authority_process.stdout.readline, ' '):
         output = str(stdout_line)
-        print(output)
-        print('END' in output)
-        sleep(5)
         if "obstacles" in output:
             for obj in output[15:-6].split(', '):
                 obstacles.append(obj)
@@ -41,5 +38,4 @@ def carRequest():
     }), 200
 
 if __name__ == '__main__':
-    print("------------------------START")
     app.run(host='0.0.0.0', port=PORT)
