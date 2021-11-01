@@ -1,5 +1,4 @@
 from logic.trafficParticipant import TrafficParticipant
-from flask import jsonify
 import requests
 
 def dispatch(latitude, longitude):
