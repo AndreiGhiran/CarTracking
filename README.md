@@ -35,3 +35,11 @@ The projects section on the GitHub repository: https://github.com/AndreiGhiran/C
 **Next steps:**
 - write the data processing authority dispatcher (**Asignee: Sergiu**)
 - continue writing the logic for the data processing entity (**Asignee: Sergiu**)
+
+## Lab 5 contributions
+**Sergiu Nistor:**
+- write the data processing authority dispatcher
+- continue writing the logic for the data processing entity
+
+**Next steps:**
+- Unit tests (mock external dependencies; only test on discrete components/classes; Mockito: https://pypi.org/project/mockito/)
