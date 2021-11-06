@@ -1,7 +1,11 @@
 import torch
 import numpy as np
 import cv2
+
 from torchvision.models import detection
+from typing import List
+
+from .AbstractAlgorithm import AbstractAlgorithm
 
 
 CLASSES = [
@@ -32,6 +36,9 @@ class ObjectDetection(AbstractAlgorithm):
         self.__model = MODELS['frcnn-mobilenet'](pretrained=True, progress=True, num_classes=len(CLASSES), pretrained_backbone=True)
         self.__model.eval()
 
+    def get_classes(self) -> List[str]:
+        return self.__classes
+
     def process_frame(self, frame: List[List[List[int]]]):
         return self.__get_objects(frame)
 
@@ -45,6 +52,3 @@ class ObjectDetection(AbstractAlgorithm):
         detections = self.__model(image)[0]
 
         return detections
-
-    def get_classes(self) -> List[str]:
-        return self.__classes

@@ -1,6 +1,8 @@
 import torch
 
-from AbstractAlgorithm import AbstractAlgorithm
+from typing import List
+
+from .AbstractAlgorithm import AbstractAlgorithm
 
 
 class DepthEstimation(AbstractAlgorithm):
