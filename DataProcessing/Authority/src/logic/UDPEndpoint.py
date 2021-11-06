@@ -4,7 +4,7 @@ import struct
 
 from threading import Lock
 
-from DataProcessingEntity import DataProcessingEntity
+from .DataProcessingEntity import DataProcessingEntity
 
 
 # Uses dependency injection for DataProcessingEntity

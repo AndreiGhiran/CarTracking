@@ -1,8 +1,8 @@
 from typing import List
 
-from ..DatabaseHandler import DatabaseHandler
-from algorithms.DepthEstimation import DepthEstimation
-from algorithms.ObjectDetection import ObjectDetection
+from .DatabaseHandler import DatabaseHandler
+from .algorithms.DepthEstimation import DepthEstimation
+from .algorithms.ObjectDetection import ObjectDetection
 
 
 # Uses dependency injection for DepthEstimation and ObjectDetection

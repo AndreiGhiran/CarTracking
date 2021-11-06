@@ -1,4 +1,5 @@
 import mysql.connector
+
 from threading import Lock
 from typing import List, Tuple
 
