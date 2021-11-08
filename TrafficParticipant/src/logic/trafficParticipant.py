@@ -17,13 +17,12 @@ class TrafficParticipant:
     # @exception_catcher
     # @method_call_decorator
     def decideNextAction(self, geolocation, otherCarsGeolocations, obstaclesGeolocations):
-        action = None
-        return action
+        return None
     
     # @exception_catcher
     # @method_call_decorator
     def connectToClosestCamera(self):
-        return 
+        return None
 
     # @exception_catcher
     # @method_call_decorator

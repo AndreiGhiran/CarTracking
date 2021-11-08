@@ -1,7 +1,5 @@
 from flask import Flask, request, jsonify
-from configparser import ConfigParser
-from subprocess import Popen, PIPE
-from logic.requestFulfillment import CarRequestFullfilmentAuthority
+from logic.requestFulfillment import CarRequestFulfillmentAuthority
 
 
 PORT = 8081
@@ -16,7 +14,7 @@ def carRequest():
     # TODO use real geolocation values (there are temporary)
     geolocation = [12,34]
     
-    request_handler = CarRequestFullfilmentAuthority()
+    request_handler = CarRequestFulfillmentAuthority()
     
     cars, obstacles = request_handler.satisfyRequest(geolocation)
 
@@ -24,6 +22,7 @@ def carRequest():
         'cars': cars,
         'obstacles': obstacles,
     }), 200
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=PORT)
