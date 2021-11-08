@@ -6,7 +6,7 @@ from mockito import when, mock, spy, verify, unstub, forget_invocations
 from ...src.logic.DatabaseHandler import DatabaseHandler
 
 
-class TestUDPEndpoint:
+class TestDatabaseHandler:
     def setup_class(self):
         self.__sql_connection = mock()
         self.__cursor = mock()
