@@ -42,10 +42,14 @@ def dispatch():
         db_data['pass'],
         db_data['host'],
         db_data['schema']
-    ), stdin=PIPE, stdout=PIPE, stderr=PIPE, shell=True)
-    for stdout_line in iter(authority_process.stdout.readline, ''):
-        authority_port = stdout_line
-        break
+    ), stdout=PIPE)
+    for stdout_line in iter(authority_process.stdout.readline, b''):
+        if stdout_line != b'':
+            try:
+                authority_port = int(stdout_line)
+                break
+            except:
+                continue
 
     return jsonify({
         'port': authority_port

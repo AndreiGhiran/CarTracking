@@ -11,7 +11,7 @@ class DatabaseHandler:
         self.__statement_lock = Lock() # Thread-safe
 
     def insert_camera(self, latitude: float, longitude: float, x_rotation: float, y_rotation: float) -> int:
-        statement = 'INSERT INTO CAMERAS (Latitude, Longitude, XRotation, YRotation) VALUES (%f, %f, %f, %f)'
+        statement = 'INSERT INTO CAMERAS (Latitude, Longitude, XRotation, YRotation) VALUES (%s, %s, %s, %s)'
         values = (latitude, longitude, x_rotation, y_rotation)
 
         self.__statement_lock.acquire()
@@ -29,7 +29,7 @@ class DatabaseHandler:
             self.insert_car(camera_id, car_position[0], car_position[1])
 
     def insert_car(self, camera_id: int, latitude: float, longitude: float):
-        statement = 'INSERT INTO CARS (CameraID, Latitude, Longitude) VALUES (%d, %f, %f)'
+        statement = 'INSERT INTO CARS (CameraID, Latitude, Longitude) VALUES (%s, %s, %s)'
         values = (camera_id, latitude, longitude)
 
         self.__statement_lock.acquire()
@@ -38,7 +38,7 @@ class DatabaseHandler:
         self.__statement_lock.release()
         
     def delete_cars(self, camera_id: int):
-        statement = 'DELETE FROM CARS WHERE CameraID = %d'
+        statement = 'DELETE FROM CARS WHERE CameraID = %s'
         values = (camera_id)
 
         self.__statement_lock.acquire()
@@ -53,7 +53,7 @@ class DatabaseHandler:
             self.insert_obstacle(camera_id, obstacle_position[0], obstacle_position[1])
 
     def insert_obstacle(self, camera_id: int, latitude: float, longitude: float):
-        statement = 'INSERT INTO OBSTACLES (CameraID, Latitude, Longitude) VALUES (%d, %f, %f)'
+        statement = 'INSERT INTO OBSTACLES (CameraID, Latitude, Longitude) VALUES (%s, %s, %s)'
         values = (camera_id, latitude, longitude)
 
         self.__statement_lock.acquire()
@@ -62,7 +62,7 @@ class DatabaseHandler:
         self.__statement_lock.release()
 
     def delete_obstacles(self, camera_id: int):
-        statement = 'DELETE FROM OBSTACLES WHERE CameraID = %d'
+        statement = 'DELETE FROM OBSTACLES WHERE CameraID = %s'
         values = (camera_id)
 
         self.__statement_lock.acquire()

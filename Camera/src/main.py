@@ -6,10 +6,10 @@ import pickle
 import struct
 
 from configparser import ConfigParser
-from flask import jsonify
+import json
 
 
-VIDEO_FILE_NAME = sys.arv[1]
+VIDEO_FILE_NAME = sys.argv[1]
 VIDEO_FILE_PATH = '../data/{}'.format(VIDEO_FILE_NAME)
 
 CAMERA_LATITUDE = sys.argv[2]
@@ -27,8 +27,8 @@ data_processing_authority_dispatcher_data = {
 
 
 def dispatch(frame_size_x, frame_size_y, latitude, longitude, rotation_x, rotation_y):
-    url = '{}:{}'.format(data_processing_authority_dispatcher_data['ip'], data_processing_authority_dispatcher_data['port'])
-    data = jsonify({
+    url = '{}:{}/dispatch'.format(data_processing_authority_dispatcher_data['ip'], data_processing_authority_dispatcher_data['port'])
+    data = json.dumps({
         'frame_size_x': frame_size_x,
         'frame_size_y': frame_size_y,
         'latitude': latitude,
@@ -46,7 +46,7 @@ def get_frame_size(video_file_path):
     frame_size_x, frame_size_y = video_capture.get(cv2.CAP_PROP_FRAME_WIDTH), video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT)
     video_capture.release()
 
-    return frame_size_x, frame_size_y
+    return int(frame_size_x), int(frame_size_y)
 
 def stream_frames(data_processing_authority_data, video_file_path):
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
