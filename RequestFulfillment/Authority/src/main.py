@@ -1,20 +1,26 @@
 from flask import Flask, request, jsonify
 from logic.requestFulfillment import CarRequestFulfillmentAuthority
+import sys
 
+print(sys.argv)
 
 PORT = 8081
 
 app = Flask(__name__)
+
+DB_USER = sys.argv[1]
+DB_PASS = sys.argv[2]
+DB_HOST = sys.argv[3]
+DB_SCHEMA = sys.argv[4]
 
 
 @app.route("/carRequest",  methods=['GET'])
 def carRequest():
     request_json = request.get_json()
 
-    # TODO use real geolocation values (there are temporary)
-    geolocation = [12,34]
+    geolocation = request_json['geolocation']
     
-    request_handler = CarRequestFulfillmentAuthority()
+    request_handler = CarRequestFulfillmentAuthority(DB_USER, DB_PASS, DB_HOST, DB_SCHEMA)
     
     cars, obstacles = request_handler.satisfyRequest(geolocation)
 
