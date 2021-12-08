@@ -14,8 +14,14 @@ CREATE TABLE CAMERAS (
 CREATE TABLE CARS (
 	ID INT AUTO_INCREMENT PRIMARY KEY,
     CameraID INT NOT NULL,
-    Latitude DOUBLE NOT NULL,
-    Longitude DOUBLE NOT NULL,
+    Box_1_Latitude DOUBLE NOT NULL,
+    Box_1_Longitude DOUBLE NOT NULL,
+    Box_2_Latitude DOUBLE NOT NULL,
+    Box_2_Longitude DOUBLE NOT NULL,
+    Box_3_Latitude DOUBLE NOT NULL,
+    Box_3_Longitude DOUBLE NOT NULL,
+    Box_4_Latitude DOUBLE NOT NULL,
+    Box_4_Longitude DOUBLE NOT NULL,
     
     FOREIGN KEY (CameraID) REFERENCES CAMERAS(ID)
 );
@@ -23,8 +29,14 @@ CREATE TABLE CARS (
 CREATE TABLE OBSTACLES (
 	ID INT AUTO_INCREMENT PRIMARY KEY,
     CameraID INT NOT NULL,
-    Latitude DOUBLE NOT NULL,
-    Longitude DOUBLE NOT NULL,
+    Box_1_Latitude DOUBLE NOT NULL,
+    Box_1_Longitude DOUBLE NOT NULL,
+    Box_2_Latitude DOUBLE NOT NULL,
+    Box_2_Longitude DOUBLE NOT NULL,
+    Box_3_Latitude DOUBLE NOT NULL,
+    Box_3_Longitude DOUBLE NOT NULL,
+    Box_4_Latitude DOUBLE NOT NULL,
+    Box_4_Longitude DOUBLE NOT NULL,
     
     FOREIGN KEY (CameraID) REFERENCES CAMERAS(ID)
 );

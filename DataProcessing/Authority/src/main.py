@@ -5,7 +5,11 @@ from logic.UDPEndpoint import UDPEndpoint
 from logic.DataProcessingEntity import DataProcessingEntity
 from logic.algorithms.DepthEstimation import DepthEstimation
 from logic.algorithms.ObjectDetection import ObjectDetection
+from logic.algorithms.PositionReconstruction import PositionReconstruction
 
+
+FOCAL_LENGTH_X = 35.
+FOCAL_LENGTH_Y = 35.
 
 FRAME_SIZE_X = int(sys.argv[1])
 FRAME_SIZE_Y = int(sys.argv[2])
@@ -24,11 +28,12 @@ DB_SCHEMA = sys.argv[10]
 
 if __name__ == "__main__":
     database_handler = DatabaseHandler(DB_USER, DB_PASS, DB_HOST, DB_SCHEMA)
-    database_handler.insert_camera(LATITUDE, LONGITUDE, ROTATION_X, ROTATION_Y)
+    camera_id = database_handler.insert_camera(LATITUDE, LONGITUDE, ROTATION_X, ROTATION_Y)
 
     depth_estimation = DepthEstimation()
     object_detection = ObjectDetection()
-    data_processing_entity = DataProcessingEntity(LATITUDE, LONGITUDE, ROTATION_X, ROTATION_Y, depth_estimation, object_detection, database_handler)
+    position_reconstruction = PositionReconstruction(LATITUDE, LONGITUDE, ROTATION_X, ROTATION_Y, FOCAL_LENGTH_X, FOCAL_LENGTH_Y)
+    data_processing_entity = DataProcessingEntity(camera_id, LATITUDE, LONGITUDE, ROTATION_X, ROTATION_Y, depth_estimation, object_detection, database_handler, position_reconstruction)
 
     udp_endpoint = UDPEndpoint(FRAME_SIZE, data_processing_entity)
     udp_endpoint.run()

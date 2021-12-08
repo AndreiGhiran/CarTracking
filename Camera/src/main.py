@@ -4,9 +4,10 @@ import socket
 import cv2
 import pickle
 import struct
+import json
 
 from configparser import ConfigParser
-import json
+from time import sleep
 
 
 VIDEO_FILE_NAME = sys.argv[1]
@@ -50,7 +51,8 @@ def get_frame_size(video_file_path):
 
 def stream_frames(data_processing_authority_data, video_file_path):
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    server_address = (data_processing_authority_data['ip'], data_processing_authority_data['port'])
+    server_address = (data_processing_authority_data['ip'].replace('https://', '').replace('http://', ''), data_processing_authority_data['port'])
+    client_socket.connect(server_address)
     
     video_capture = cv2.VideoCapture(video_file_path)
 
@@ -58,14 +60,18 @@ def stream_frames(data_processing_authority_data, video_file_path):
         video_not_ended, frame = video_capture.read()
 
         if video_not_ended:
+            frame = cv2.resize(frame, (45, 80))
             serialized_frame = pickle.dumps(frame)
+            client_socket.sendall(struct.pack('L', len(serialized_frame)) + serialized_frame)
 
-            client_socket.sendall(
-                struct.pack('L', len(serialized_frame) + serialized_frame),
-                server_address
-            )
+            frame = None
+            serialized_frame = None
+            sleep(3)            
         else:
             video_capture.set(cv2.CAP_PROP_POS_FRAMES, 0)
+
+            frame = None
+            sleep(3)
 
 if __name__ == '__main__':
     frame_size_x, frame_size_y = get_frame_size(VIDEO_FILE_PATH)

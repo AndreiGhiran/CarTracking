@@ -28,11 +28,11 @@ class UDPEndpoint:
         self.__set_is_running(True)
 
         allowed_address = None
-        data = ''
+        data = b''
         payload_size = struct.calcsize('L')
         while self.get_is_running():
             while len(data) < payload_size:
-                new_data, sender_address = udp_socket.recvfrom(min(self.__frame_size, 4096))
+                new_data, sender_address = udp_socket.recvfrom(65535)
 
                 if allowed_address is None:
                     allowed_address = sender_address
@@ -46,7 +46,7 @@ class UDPEndpoint:
             message_size = struct.unpack('L', packed_message_size)[0]
 
             while len(data) < message_size:
-                new_data, sender_address = udp_socket.recvfrom(min(self.__frame_size, 4096))
+                new_data, sender_address = udp_socket.recvfrom(45 * 80 * 3)
 
                 if allowed_address is None:
                     allowed_address = sender_address
@@ -59,7 +59,7 @@ class UDPEndpoint:
             frame = pickle.loads(data[:message_size])
             data = data[message_size:]
 
-            data_processing_entity.process_frame(frame)
+            self.__data_processing_entity.process_frame(frame)
 
         udp_socket.close()
 
