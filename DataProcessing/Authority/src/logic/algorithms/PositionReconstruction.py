@@ -41,7 +41,7 @@ class PositionReconstruction:
         ))
 
         vertices_depth = list((
-            depth_image[round(float(vertices_coords[i][0].item()))][round(float(vertices_coords[i][1].item()))]
+            depth_image[round(float(vertices_coords[i][0].item()))][round(float(vertices_coords[i][1].item()))] / MIDAS_DEPTH_UNIT_TO_METER
             for i in range(len(vertices_coords))
         ))
 
