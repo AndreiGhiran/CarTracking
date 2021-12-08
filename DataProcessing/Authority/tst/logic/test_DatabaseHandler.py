@@ -43,7 +43,7 @@ class TestDatabaseHandler:
 
         self.__database_handler.delete_cars(0)
 
-        verify(self.__cursor).execute('DELETE FROM CARS WHERE CameraID = %s', (0))
+        verify(self.__cursor).execute('DELETE FROM CARS WHERE CameraID = %s', (0,))
 
     def test_when_InsertCars_then_CursorExecutesCorrectStatement(self):
         forget_invocations(self.__cursor)
@@ -60,7 +60,7 @@ class TestDatabaseHandler:
                 'INSERT INTO CARS (CameraID, Box_1_Latitude, Box_1_Longitude, Box_2_Latitude, Box_2_Longitude, Box_3_Latitude, Box_3_Longitude, Box_4_Latitude, Box_4_Longitude) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)',
                 (50, i, i, i, i, i, i, i, i)
             )
-        verify(self.__cursor).execute('DELETE FROM CARS WHERE CameraID = %s', (50))
+        verify(self.__cursor).execute('DELETE FROM CARS WHERE CameraID = %s', (50,))
 
     def test_when_InsertObstacle_then_CursorExecutesCorrectStatement(self):
         forget_invocations(self.__cursor)
@@ -77,7 +77,7 @@ class TestDatabaseHandler:
 
         self.__database_handler.delete_obstacles(0)
 
-        verify(self.__cursor).execute('DELETE FROM OBSTACLES WHERE CameraID = %s', (0))
+        verify(self.__cursor).execute('DELETE FROM OBSTACLES WHERE CameraID = %s', (0,))
 
     def test_when_InsertObstacles_then_CursorExecutesCorrectStatement(self):
         forget_invocations(self.__cursor)
@@ -94,4 +94,4 @@ class TestDatabaseHandler:
                 'INSERT INTO OBSTACLES (CameraID, Box_1_Latitude, Box_1_Longitude, Box_2_Latitude, Box_2_Longitude, Box_3_Latitude, Box_3_Longitude, Box_4_Latitude, Box_4_Longitude) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)',
                 (50, i, i, i, i, i, i, i, i)
             )
-        verify(self.__cursor).execute('DELETE FROM OBSTACLES WHERE CameraID = %s', (50))
+        verify(self.__cursor).execute('DELETE FROM OBSTACLES WHERE CameraID = %s', (50,))
