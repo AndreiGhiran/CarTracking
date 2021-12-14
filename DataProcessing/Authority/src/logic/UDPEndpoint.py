@@ -28,36 +28,15 @@ class UDPEndpoint:
         self.__set_is_running(True)
 
         allowed_address = None
-        data = b''
-        payload_size = struct.calcsize('L')
         while self.get_is_running():
-            while len(data) < payload_size:
-                new_data, sender_address = udp_socket.recvfrom(65535)
+            data, sender_address = udp_socket.recvfrom(65535)
+            if allowed_address is None:
+                allowed_address = sender_address
+            elif allowed_address != sender_address:
+                print('Another client attempted to send data to the endpoint. Current sender: {}. Allowed sender: {}.'.format(sender_address, allowed_address))
+                continue
 
-                if allowed_address is None:
-                    allowed_address = sender_address
-                elif allowed_address != sender_address:
-                    print('Another client attempted to send data to the endpoint. Current sender: {}. Allowed sender: {}.'.format(sender_address, allowed_address))
-                    continue
-
-                data += new_data
-            packed_message_size = data[:payload_size]
-            data = data[payload_size:]
-            message_size = struct.unpack('L', packed_message_size)[0]
-
-            while len(data) < message_size:
-                new_data, sender_address = udp_socket.recvfrom(45 * 80 * 3)
-
-                if allowed_address is None:
-                    allowed_address = sender_address
-                elif allowed_address != sender_address:
-                    print('Another client attempted to send data to the endpoint. Current sender: {}. Allowed sender: {}.'.format(sender_address, allowed_address))
-                    continue
-
-                data += new_data[message_size:]
-                
-            frame = pickle.loads(data[:message_size])
-            data = data[message_size:]
+            frame = pickle.loads(data)
 
             self.__data_processing_entity.process_frame(frame)
 

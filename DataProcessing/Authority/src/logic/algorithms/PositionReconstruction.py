@@ -1,6 +1,5 @@
 import numpy as np
 
-
 from sympy import sin, cos, sqrt, acos, atan2, pi
 from typing import Tuple
 

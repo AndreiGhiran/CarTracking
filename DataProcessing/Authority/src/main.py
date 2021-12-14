@@ -25,6 +25,8 @@ DB_PASS = sys.argv[8]
 DB_HOST = sys.argv[9]
 DB_SCHEMA = sys.argv[10]
 
+VERBOSE = len(sys.argv) > 11
+
 
 if __name__ == "__main__":
     database_handler = DatabaseHandler(DB_USER, DB_PASS, DB_HOST, DB_SCHEMA)
@@ -33,7 +35,7 @@ if __name__ == "__main__":
     depth_estimation = DepthEstimation()
     object_detection = ObjectDetection()
     position_reconstruction = PositionReconstruction(LATITUDE, LONGITUDE, ROTATION_X, ROTATION_Y, FOCAL_LENGTH_X, FOCAL_LENGTH_Y)
-    data_processing_entity = DataProcessingEntity(camera_id, LATITUDE, LONGITUDE, ROTATION_X, ROTATION_Y, depth_estimation, object_detection, database_handler, position_reconstruction)
+    data_processing_entity = DataProcessingEntity(camera_id, LATITUDE, LONGITUDE, ROTATION_X, ROTATION_Y, depth_estimation, object_detection, database_handler, position_reconstruction, VERBOSE)
 
     udp_endpoint = UDPEndpoint(FRAME_SIZE, data_processing_entity)
     udp_endpoint.run()

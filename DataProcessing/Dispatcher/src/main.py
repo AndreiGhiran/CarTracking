@@ -1,9 +1,13 @@
+import sys
+
 from flask import Flask, request, jsonify
 from configparser import ConfigParser
 from subprocess import Popen, PIPE
 
 
 PORT = 8080
+
+VERBOSE = len(sys.argv) > 1
 
 
 config_parser = ConfigParser()
@@ -18,7 +22,7 @@ db_data = {
 app = Flask(__name__)
 
 
-@app.post("/dispatch")
+@app.post('/dispatch')
 def dispatch():
     request_json = request.get_json()
 
@@ -41,7 +45,8 @@ def dispatch():
         db_data['user'],
         db_data['pass'],
         db_data['host'],
-        db_data['schema']
+        db_data['schema'],
+        str(VERBOSE)
     ), stdout=PIPE)
     for stdout_line in iter(authority_process.stdout.readline, b''):
         if stdout_line != b'':
@@ -53,6 +58,12 @@ def dispatch():
 
     return jsonify({
         'port': authority_port
+    }), 200
+
+@app.get('/ping')
+def ping():
+    return jsonify({
+        'load': 'pong'
     }), 200
 
 if __name__ == '__main__':
