@@ -26,5 +26,5 @@ if __name__ == "__main__":
         print(response)
         car.geoLocation[0] += 0.5
         car.geoLocation[1] += 0.5
-        sleep(3)
+        sleep(1)
         #TODO add a way to stop the loop when disconecting from the camera

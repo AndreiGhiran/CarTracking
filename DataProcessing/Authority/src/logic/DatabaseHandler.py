@@ -71,7 +71,7 @@ class DatabaseHandler:
         self.__statement_lock.release()
 
     def get_cars_by_geo_loc(self, geo_location):
-        geo_loc_offset = 2
+        geo_loc_offset = 5
         statement = 'SELECT Latitude, Longitude FROM CARS WHERE Latitude <= %s AND Latitude >= %s AND Longitude <= %s AND Longitude >= %s'
         values = (geo_location[0] + geo_loc_offset, geo_location[0] - geo_loc_offset, geo_location[1] + geo_loc_offset, geo_location[1] - geo_loc_offset)
         self.__statement_lock.acquire()
@@ -81,7 +81,7 @@ class DatabaseHandler:
         return result
 
     def get_obstacles_by_geo_loc(self, geo_location):
-        geo_loc_offset = 2
+        geo_loc_offset = 5
         statement = 'SELECT Latitude, Longitude FROM OBSTACLES WHERE Latitude <= %s AND Latitude >= %s AND Longitude <= %s AND Longitude >= %s'
         values = (geo_location[0] + geo_loc_offset, geo_location[0] - geo_loc_offset, geo_location[1] + geo_loc_offset, geo_location[1] - geo_loc_offset)
         self.__statement_lock.acquire()

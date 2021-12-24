@@ -34,3 +34,17 @@ class TestTrafficParticipant:
         self.__traffic_participant.dissconectFromCamera()
 
         verify(self.__cameraConnection)
+
+    # def test_stress_api(self):
+    #     end = datetime.now() + timedelta(0, self.__stress_test_seconds)
+    #     count = 0
+    #     start = datetime.now()
+    #     while datetime.now().time() < end.time():
+    #         response = self.__request_fulfillment.satisfyRequest(self.__trafficCameraGeolocation)
+    #         response += (0, 0)
+    #         count += 1
+    #     end = datetime.now()
+    #     interval = end - start
+    #     print(
+    #         f'{count} response in {interval.seconds} seconds\n average of {count / interval.seconds} responses/second')
+    #     assert count >= self.__stress_test_seconds * 1500 and count / interval.seconds >= 1500

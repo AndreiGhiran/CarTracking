@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from configparser import ConfigParser
 from logic.requestFulfillment import CarRequestFulfillmentAuthority
 import sys
 
@@ -8,11 +9,14 @@ PORT = 8081
 
 app = Flask(__name__)
 
-DB_USER = sys.argv[1]
-DB_PASS = sys.argv[2]
-DB_HOST = sys.argv[3]
-DB_SCHEMA = sys.argv[4]
-
+config_parser = ConfigParser()
+config_parser.read(r'D:\Facultate\TAIP\project\CarTracking\RequestFulfillment\Authority\configuration\db.config')
+db_data = {
+    'user': config_parser.get('database', 'user'),
+    'pass': config_parser.get('database', 'pass'),
+    'host': config_parser.get('database', 'host'),
+    'schema': config_parser.get('database', 'schema')
+}
 
 @app.route("/carRequest",  methods=['GET'])
 def carRequest():
@@ -20,7 +24,7 @@ def carRequest():
 
     geolocation = request_json['geolocation']
     
-    request_handler = CarRequestFulfillmentAuthority(DB_USER, DB_PASS, DB_HOST, DB_SCHEMA)
+    request_handler = CarRequestFulfillmentAuthority(db_data['user'], db_data['pass'], db_data['host'], db_data['schema'])
     
     cars, obstacles = request_handler.satisfyRequest(geolocation)
 
@@ -31,4 +35,7 @@ def carRequest():
 
 
 if __name__ == '__main__':
+    request_handler = CarRequestFulfillmentAuthority(db_data['user'], db_data['pass'], db_data['host'], db_data['schema'])
+    request_handler.insert_stuff()
+
     app.run(host='0.0.0.0', port=PORT)
