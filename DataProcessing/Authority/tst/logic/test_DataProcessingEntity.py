@@ -10,7 +10,8 @@ class TestDataProcessingEntity:
         self.__depth_estimation = mock()
         self.__object_detection = mock()
         self.__database_handler = mock()
-        self.__data_processing_entity = DataProcessingEntity(0, 0, 0, 0, self.__depth_estimation, self.__object_detection, self.__database_handler)
+        self.__position_reconstruction = mock()
+        self.__data_processing_entity = DataProcessingEntity(0, 0, 0, 0, 0, self.__depth_estimation, self.__object_detection, self.__database_handler, self.__position_reconstruction)
 
     def test_when_ProcessData_then_ProcessingEntitiesCalledExactlyOnce(self):
         spy(self.__depth_estimation)

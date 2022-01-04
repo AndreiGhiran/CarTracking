@@ -4,9 +4,10 @@ import socket
 import cv2
 import pickle
 import struct
+import json
 
 from configparser import ConfigParser
-import json
+from time import sleep
 
 
 VIDEO_FILE_NAME = sys.argv[1]
@@ -16,6 +17,9 @@ CAMERA_LATITUDE = sys.argv[2]
 CAMERA_LONGITUDE = sys.argv[3]
 CAMERA_ROTATION_X = sys.argv[4]
 CAMERA_ROTATION_Y = sys.argv[5]
+
+FRAME_SIZE_X = 205
+FRAME_SIZE_Y = 105
 
 
 config_parser = ConfigParser()
@@ -41,16 +45,10 @@ def dispatch(frame_size_x, frame_size_y, latitude, longitude, rotation_x, rotati
 
     return data_processing_authority_port
 
-def get_frame_size(video_file_path):
-    video_capture = cv2.VideoCapture(video_file_path)
-    frame_size_x, frame_size_y = video_capture.get(cv2.CAP_PROP_FRAME_WIDTH), video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT)
-    video_capture.release()
-
-    return int(frame_size_x), int(frame_size_y)
-
-def stream_frames(data_processing_authority_data, video_file_path):
+def stream_frames(data_processing_authority_data, video_file_path, frame_size_x, frame_size_y):
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    server_address = (data_processing_authority_data['ip'], data_processing_authority_data['port'])
+    server_address = (data_processing_authority_data['ip'].replace('https://', '').replace('http://', ''), data_processing_authority_data['port'])
+    client_socket.connect(server_address)
     
     video_capture = cv2.VideoCapture(video_file_path)
 
@@ -58,21 +56,18 @@ def stream_frames(data_processing_authority_data, video_file_path):
         video_not_ended, frame = video_capture.read()
 
         if video_not_ended:
+            frame = cv2.resize(frame, (frame_size_x, frame_size_y))
             serialized_frame = pickle.dumps(frame)
-
-            client_socket.sendall(
-                struct.pack('L', len(serialized_frame) + serialized_frame),
-                server_address
-            )
+            client_socket.sendall(struct.pack('B' * (frame_size_x * frame_size_y * 3 + 154), *serialized_frame))
         else:
             video_capture.set(cv2.CAP_PROP_POS_FRAMES, 0)
 
-if __name__ == '__main__':
-    frame_size_x, frame_size_y = get_frame_size(VIDEO_FILE_PATH)
+        sleep(0.05)
 
+if __name__ == '__main__':
     data_processing_authority_port = dispatch(
-        frame_size_x,
-        frame_size_y,
+        FRAME_SIZE_X,
+        FRAME_SIZE_Y,
         CAMERA_LATITUDE,
         CAMERA_LONGITUDE,
         CAMERA_ROTATION_X,
@@ -84,4 +79,4 @@ if __name__ == '__main__':
         'port': data_processing_authority_port
     }
 
-    stream_frames(data_processing_authority_data, VIDEO_FILE_PATH)
+    stream_frames(data_processing_authority_data, VIDEO_FILE_PATH, FRAME_SIZE_X, FRAME_SIZE_Y)

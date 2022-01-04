@@ -26,21 +26,24 @@ class TestDatabaseHandler:
 
         self.__database_handler.insert_camera(0, 0, 0, 0)
 
-        verify(self.__cursor).execute('INSERT INTO CAMERAS (Latitude, Longitude, XRotation, YRotation) VALUES (%f, %f, %f, %f)', (0, 0, 0, 0))
+        verify(self.__cursor).execute('INSERT INTO CAMERAS (Latitude, Longitude, XRotation, YRotation) VALUES (%s, %s, %s, %s)', (0, 0, 0, 0))
 
     def test_when_InsertCar_then_CursorExecutesCorrectStatement(self):
         forget_invocations(self.__cursor)
 
-        self.__database_handler.insert_car(0, 0, 0)
+        self.__database_handler.insert_car(0, 0, 0, 0, 0, 0, 0, 0, 0)
 
-        verify(self.__cursor).execute('INSERT INTO CARS (CameraID, Latitude, Longitude) VALUES (%d, %f, %f)', (0, 0, 0))
+        verify(self.__cursor).execute(
+            'INSERT INTO CARS (CameraID, Box_1_Latitude, Box_1_Longitude, Box_2_Latitude, Box_2_Longitude, Box_3_Latitude, Box_3_Longitude, Box_4_Latitude, Box_4_Longitude) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)',
+            (0, 0, 0, 0, 0, 0, 0, 0, 0)
+        )
 
     def test_when_DeleteCars_then_CursorExecutesCorrectStatement(self):
         forget_invocations(self.__cursor)
 
         self.__database_handler.delete_cars(0)
 
-        verify(self.__cursor).execute('DELETE FROM CARS WHERE CameraID = %d', (0))
+        verify(self.__cursor).execute('DELETE FROM CARS WHERE CameraID = %s', (0,))
 
     def test_when_InsertCars_then_CursorExecutesCorrectStatement(self):
         forget_invocations(self.__cursor)
@@ -49,26 +52,32 @@ class TestDatabaseHandler:
 
         self.__database_handler.insert_cars(
             50,
-            [(i, i) for i in range(times)]
+            [(i, i, i, i, i, i, i, i) for i in range(times)]
         )
 
         for i in range(times):
-            verify(self.__cursor).execute('INSERT INTO CARS (CameraID, Latitude, Longitude) VALUES (%d, %f, %f)', (50, i, i))
-        verify(self.__cursor).execute('DELETE FROM CARS WHERE CameraID = %d', (50))
+            verify(self.__cursor).execute(
+                'INSERT INTO CARS (CameraID, Box_1_Latitude, Box_1_Longitude, Box_2_Latitude, Box_2_Longitude, Box_3_Latitude, Box_3_Longitude, Box_4_Latitude, Box_4_Longitude) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)',
+                (50, i, i, i, i, i, i, i, i)
+            )
+        verify(self.__cursor).execute('DELETE FROM CARS WHERE CameraID = %s', (50,))
 
     def test_when_InsertObstacle_then_CursorExecutesCorrectStatement(self):
         forget_invocations(self.__cursor)
 
-        self.__database_handler.insert_obstacle(0, 0, 0)
+        self.__database_handler.insert_obstacle(0, 0, 0, 0, 0, 0, 0, 0, 0)
 
-        verify(self.__cursor).execute('INSERT INTO OBSTACLES (CameraID, Latitude, Longitude) VALUES (%d, %f, %f)', (0, 0, 0))
+        verify(self.__cursor).execute(
+            'INSERT INTO OBSTACLES (CameraID, Box_1_Latitude, Box_1_Longitude, Box_2_Latitude, Box_2_Longitude, Box_3_Latitude, Box_3_Longitude, Box_4_Latitude, Box_4_Longitude) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)',
+            (0, 0, 0, 0, 0, 0, 0, 0, 0)
+        )
 
     def test_when_DeleteObstacles_then_CursorExecutesCorrectStatement(self):
         forget_invocations(self.__cursor)
 
         self.__database_handler.delete_obstacles(0)
 
-        verify(self.__cursor).execute('DELETE FROM OBSTACLES WHERE CameraID = %d', (0))
+        verify(self.__cursor).execute('DELETE FROM OBSTACLES WHERE CameraID = %s', (0,))
 
     def test_when_InsertObstacles_then_CursorExecutesCorrectStatement(self):
         forget_invocations(self.__cursor)
@@ -77,9 +86,12 @@ class TestDatabaseHandler:
 
         self.__database_handler.insert_obstacles(
             50,
-            [(i, i) for i in range(times)]
+            [(i, i, i, i, i, i, i, i) for i in range(times)]
         )
 
         for i in range(times):
-            verify(self.__cursor).execute('INSERT INTO OBSTACLES (CameraID, Latitude, Longitude) VALUES (%d, %f, %f)', (50, i, i))
-        verify(self.__cursor).execute('DELETE FROM OBSTACLES WHERE CameraID = %d', (50))
+            verify(self.__cursor).execute(
+                'INSERT INTO OBSTACLES (CameraID, Box_1_Latitude, Box_1_Longitude, Box_2_Latitude, Box_2_Longitude, Box_3_Latitude, Box_3_Longitude, Box_4_Latitude, Box_4_Longitude) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)',
+                (50, i, i, i, i, i, i, i, i)
+            )
+        verify(self.__cursor).execute('DELETE FROM OBSTACLES WHERE CameraID = %s', (50,))

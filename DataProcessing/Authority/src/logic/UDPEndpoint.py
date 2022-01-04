@@ -28,38 +28,17 @@ class UDPEndpoint:
         self.__set_is_running(True)
 
         allowed_address = None
-        data = ''
-        payload_size = struct.calcsize('L')
         while self.get_is_running():
-            while len(data) < payload_size:
-                new_data, sender_address = udp_socket.recvfrom(min(self.__frame_size, 4096))
+            data, sender_address = udp_socket.recvfrom(65535)
+            if allowed_address is None:
+                allowed_address = sender_address
+            elif allowed_address != sender_address:
+                print('Another client attempted to send data to the endpoint. Current sender: {}. Allowed sender: {}.'.format(sender_address, allowed_address))
+                continue
 
-                if allowed_address is None:
-                    allowed_address = sender_address
-                elif allowed_address != sender_address:
-                    print('Another client attempted to send data to the endpoint. Current sender: {}. Allowed sender: {}.'.format(sender_address, allowed_address))
-                    continue
+            frame = pickle.loads(data)
 
-                data += new_data
-            packed_message_size = data[:payload_size]
-            data = data[payload_size:]
-            message_size = struct.unpack('L', packed_message_size)[0]
-
-            while len(data) < message_size:
-                new_data, sender_address = udp_socket.recvfrom(min(self.__frame_size, 4096))
-
-                if allowed_address is None:
-                    allowed_address = sender_address
-                elif allowed_address != sender_address:
-                    print('Another client attempted to send data to the endpoint. Current sender: {}. Allowed sender: {}.'.format(sender_address, allowed_address))
-                    continue
-
-                data += new_data[message_size:]
-                
-            frame = pickle.loads(data[:message_size])
-            data = data[message_size:]
-
-            data_processing_entity.process_frame(frame)
+            self.__data_processing_entity.process_frame(frame)
 
         udp_socket.close()
 
