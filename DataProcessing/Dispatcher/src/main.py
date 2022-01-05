@@ -10,6 +10,8 @@ PORT = 8080
 VERBOSE = len(sys.argv) > 1
 
 
+print('Verbose {}'.format('on' if VERBOSE else 'off'))
+
 config_parser = ConfigParser()
 config_parser.read('../configuration/db.config')
 db_data = {
@@ -35,7 +37,12 @@ def dispatch():
     rotation_x = request_json['rotation_x']
     rotation_y = request_json['rotation_y']
 
-    authority_process = Popen('python3 ../../Authority/src/main.py {} {} {} {} {} {} {} {} {} {}'.format(
+    if VERBOSE:
+        launch_command = 'python3 ../../Authority/src/main.py {} {} {} {} {} {} {} {} {} {} -v'
+    else:
+        launch_command = 'python3 ../../Authority/src/main.py {} {} {} {} {} {} {} {} {} {}'
+
+    authority_process = Popen(launch_command.format(
         frame_size_x,
         frame_size_y,
         latitude,
@@ -45,8 +52,7 @@ def dispatch():
         db_data['user'],
         db_data['pass'],
         db_data['host'],
-        db_data['schema'],
-        str(VERBOSE)
+        db_data['schema']
     ), stdout=PIPE)
     for stdout_line in iter(authority_process.stdout.readline, b''):
         if stdout_line != b'':

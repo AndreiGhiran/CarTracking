@@ -18,8 +18,8 @@ CAMERA_LONGITUDE = sys.argv[3]
 CAMERA_ROTATION_X = sys.argv[4]
 CAMERA_ROTATION_Y = sys.argv[5]
 
-FRAME_SIZE_X = 205
-FRAME_SIZE_Y = 105
+FRAME_SIZE_X = 150
+FRAME_SIZE_Y = 130
 
 
 config_parser = ConfigParser()
