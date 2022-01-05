@@ -1,30 +1,41 @@
-from logic.trafficParticipant import TrafficParticipant
 import requests
-import json
-from time import sleep
+
+from configparser import ConfigParser
 
 
-def dispatch(latitude, longitude):
-    url = 'http://{}:{}/carRequest'.format('127.0.0.1', '8081')
-    data = json.dumps({
-        'geolocation': [latitude, longitude]
-    })
-    response = requests.get(url, data=data, headers={'Content-Type': 'application/json'})
-
-    return response.json()
+CARS_ENDPOINT = '/cars'
+OBSTACLES_ENDPOINT = '/obstacles'
 
 
-if __name__ == "__main__":
-    response = dispatch(3, 2)
-    print(response)
-    car = TrafficParticipant([3, 2],response['cars'], [3, 2], response['obstacles'], None)
-    car.connectToClosestCamera()
+config_parser = ConfigParser()
+config_parser.read('../configuration/traffic_fulfillment_authority.config')
+traffic_fulfillment_authority_data = {
+    'ip': config_parser.get('dispatcher', 'ip'),
+    'port': config_parser.get('dispatcher', 'port')
+}
+
+
+def retrieve_data_from_server(ip, port, cars_endpoint, obstacles_endpoint):
+    cars_url = '{}:{}{}'.format(ip, port, cars_endpoint)
+    obstacles_url = '{}:{}{}'.format(ip, port, obstacles_endpoint)
+
+    cars_positions = []
+    obstacles_positions = []
     while True:
-        action = car.decideNextAction(car.geoLocation, response['cars'], response['obstacles'])
-        print(action)
-        response = dispatch(car.geoLocation[0],car.geoLocation[1])
-        print(response)
-        car.geoLocation[0] += 0.5
-        car.geoLocation[1] += 0.5
-        sleep(3)
-        #TODO add a way to stop the loop when disconecting from the camera
+        cars_data = requests.get(cars_url, headers={'Content-Type': 'application/json'})
+        updated_cars_positions = cars_data.json()['carsPositions']
+        new_cars_positions = [car_position for car_position in updated_cars_positions if car_position not in cars_positions]
+        if len(new_cars_positions) > 0:
+            print('{} new cars positions retrieved'.format(len(new_cars_positions)))
+        cars_positions = updated_cars_positions
+
+        obstacles_data = requests.get(obstacles_url, headers={'Content-Type': 'application/json'})
+        updated_obstacles_positions = obstacles_data.json()['obstaclesPositions']
+        new_obstacles_positions = [obstacle_position for obstacle_position in updated_obstacles_positions if obstacle_position not in obstacles_positions]
+        if len(new_obstacles_positions) > 0:
+            print('{} new obstacles positions retrieved'.format(len(new_obstacles_positions)))
+        obstacles_positions = updated_obstacles_positions
+
+
+if __name__ == '__main__':
+    retrieve_data_from_server(traffic_fulfillment_authority_data['ip'], traffic_fulfillment_authority_data['port'], CARS_ENDPOINT, OBSTACLES_ENDPOINT)
